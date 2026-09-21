@@ -1,0 +1,169 @@
+{
+  "semanticVersioning": {
+    "description": "Semantic Versioning Configuration für Git Hooks",
+    "format": "MAJOR.MINOR.PATCH",
+    "examples": {
+      "initial": "0.0.0",
+      "firstFeature": "0.1.0",
+      "firstPatch": "0.0.1",
+      "majorRelease": "1.0.0",
+      "production": "1.2.3"
+    }
+  },
+  "conventionalCommits": {
+    "description": "Commit Message Format für automatische Versionierung",
+    "syntax": "<type>(<scope>): <subject>",
+    "types": {
+      "feat": {
+        "description": "Eine neue Funktion",
+        "versionBump": "MINOR",
+        "example": "feat(auth): OAuth2 Unterstützung",
+        "icon": "✨"
+      },
+      "fix": {
+        "description": "Ein Bug-Fix",
+        "versionBump": "PATCH",
+        "example": "fix(ui): Button-Ausrichtung repariert",
+        "icon": "🐛"
+      },
+      "docs": {
+        "description": "Dokumentations-Änderungen",
+        "versionBump": "PATCH",
+        "example": "docs: README aktualisiert",
+        "icon": "📖"
+      },
+      "style": {
+        "description": "Formatierung, fehlende Semikola etc.",
+        "versionBump": "PATCH",
+        "example": "style(core): Code-Formatierung",
+        "icon": "💄"
+      },
+      "refactor": {
+        "description": "Code umstrukturieren ohne Funktionsänderung",
+        "versionBump": "PATCH",
+        "example": "refactor(api): Service umorganisiert",
+        "icon": "♻️"
+      },
+      "perf": {
+        "description": "Performance-Verbesserung",
+        "versionBump": "PATCH",
+        "example": "perf(db): Query-Optimierung",
+        "icon": "⚡"
+      },
+      "test": {
+        "description": "Tests hinzufügen oder ändern",
+        "versionBump": "PATCH",
+        "example": "test(auth): Login-Test hinzugefügt",
+        "icon": "✅"
+      },
+      "chore": {
+        "description": "Maintenance-Änderungen (kein Code)",
+        "versionBump": "NONE",
+        "example": "chore(deps): Abhängigkeiten aktualisiert",
+        "icon": "🔧"
+      },
+      "ci": {
+        "description": "CI/CD Konfiguration",
+        "versionBump": "NONE",
+        "example": "ci(github): Workflows konfiguriert",
+        "icon": "🤖"
+      }
+    },
+    "breakingChanges": {
+      "description": "Signalisiert Breaking Changes (MAJOR Bump)",
+      "method1": "Exclamation Mark",
+      "syntax1": "<type>!: <subject>",
+      "example1": "feat(api)!: API-Schema geändert",
+      "method2": "Footer",
+      "syntax2": "BREAKING CHANGE: <description>",
+      "example2": "feat(api): Neue API\\n\\nBREAKING CHANGE: alte Endpoints entfernt",
+      "versionBump": "MAJOR"
+    }
+  },
+  "versionBumpRules": {
+    "MAJOR": {
+      "increment": "+1.0.0",
+      "triggers": ["Breaking Changes", "BREAKING CHANGE footer", "type!: syntax"],
+      "example": "1.0.0 → 2.0.0"
+    },
+    "MINOR": {
+      "increment": "+0.1.0",
+      "triggers": ["feat: type"],
+      "example": "1.0.0 → 1.1.0"
+    },
+    "PATCH": {
+      "increment": "+0.0.1",
+      "triggers": ["fix:", "docs:", "style:", "refactor:", "perf:", "test:"],
+      "example": "1.0.0 → 1.0.1"
+    },
+    "NONE": {
+      "increment": "No change",
+      "triggers": ["chore:", "ci:", "Non-Conventional format"],
+      "example": "1.0.0 → 1.0.0"
+    }
+  },
+  "fileStructure": {
+    ".git/hooks/post-commit": "Hook der nach jedem Commit ausgeführt wird",
+    "scripts/semantic-versioning.sh": "Hauptlogik: Analysiert Commits und erstellt Tags",
+    "scripts/setup-hooks.sh": "Setup-Script für einmalige Konfiguration",
+    "scripts/test-semantic-versioning.sh": "Test-Suite für Debugging",
+    "README_SEMANTIC_VERSIONING.md": "Ausführliche Dokumentation",
+    "QUICKSTART.md": "Schnelleinstieg",
+    ".semantic-versioning-config.json": "Diese Konfigurationsdatei"
+  },
+  "workflowExample": {
+    "step1": {
+      "action": "Project Start",
+      "command": "bash scripts/setup-hooks.sh",
+      "result": "v0.0.0 erstellt"
+    },
+    "step2": {
+      "action": "First Feature",
+      "command": "git commit -m 'feat: Initial API'",
+      "result": "v0.1.0 erstellt"
+    },
+    "step3": {
+      "action": "Bug-Fix",
+      "command": "git commit -m 'fix: Error handling'",
+      "result": "v0.1.1 erstellt"
+    },
+    "step4": {
+      "action": "Multiple Features",
+      "command": "git commit -m 'feat: New endpoints'",
+      "result": "v0.2.0 erstellt"
+    },
+    "step5": {
+      "action": "Breaking Change",
+      "command": "git commit -m 'feat!: API v2'",
+      "result": "v1.0.0 erstellt"
+    }
+  },
+  "troubleshooting": {
+    "hookNotExecuted": [
+      "Check permissions: ls -la .git/hooks/post-commit",
+      "Configure git: git config core.hooksPath .git/hooks",
+      "Run manually: bash scripts/semantic-versioning.sh"
+    ],
+    "tagAlreadyExists": [
+      "Delete local: git tag -d v1.0.0",
+      "Delete remote: git push origin :refs/tags/v1.0.0",
+      "Recreate: git commit -m 'fix: Retry with new tag'"
+    ],
+    "noTagsCreated": [
+      "Check message format: must follow Conventional Commits",
+      "Test manually: bash scripts/semantic-versioning.sh",
+      "View output: GIT_TRACE=1 git commit -m '...'"
+    ]
+  },
+  "commands": {
+    "setup": "bash scripts/setup-hooks.sh",
+    "manualRun": "bash scripts/semantic-versioning.sh",
+    "test": "bash scripts/test-semantic-versioning.sh",
+    "listTags": "git tag -l",
+    "listTagsDetailed": "git tag -l --format='%(refname:short) - %(creatordate:iso)'",
+    "pushTags": "git push origin --tags",
+    "showCurrentVersion": "git describe --tags",
+    "deleteLocalTag": "git tag -d <tagname>",
+    "deleteRemoteTag": "git push origin :refs/tags/<tagname>"
+  }
+}
