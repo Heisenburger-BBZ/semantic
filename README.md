@@ -27,3 +27,15 @@ Vor dem ersten echten Tag kann die Berechnung getestet werden:
 ```bash
 DRY_RUN=1 scripts/semantic-version-tag.sh
 ```
+
+## GitHub Actions
+
+Die Workflows bilden die Kette `Unit Tests -> Build -> Semantic Version Tag`:
+
+- `.github/workflows/unit-tests.yml` installiert die npm-Abhängigkeiten und führt `npm test` aus.
+- `.github/workflows/build.yml` startet nur nach einem erfolgreichen Unit-Test-Workflow und führt `npm run build` aus.
+- `.github/workflows/semantic-version.yml` startet nur nach einem erfolgreichen Build-Workflow, verwendet dasselbe Tagging-Script und pusht den neuen Tag mit `GITHUB_TOKEN`.
+
+Alle Workflows verwenden die getestete Commit-Version. Dadurch werden Tags nur für Commits erzeugt, deren Tests und Build erfolgreich waren.
+
+Damit das funktioniert, benötigt der Workflow die Berechtigung `Contents: Read and write`. Diese ist im Workflow bereits über `permissions: contents: write` gesetzt.
