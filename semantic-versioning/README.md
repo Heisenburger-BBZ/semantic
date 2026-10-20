@@ -43,6 +43,8 @@ npm run build
 npm run test:unit
 ```
 
+The unit tests run once and exit; they do not use watch mode.
+
 ### Run End-to-End Tests with [Playwright](https://playwright.dev)
 
 ```sh
@@ -67,3 +69,9 @@ npm run test:e2e -- --debug
 ```sh
 npm run lint
 ```
+
+Linting reports issues without automatically fixing files.
+
+## Continuous Integration
+
+Pull requests targeting `main` run the unit tests, E2E tests, and linter in parallel. Pushes to `main` run the same checks, then create and push a semantic version tag with `scripts/semantic-version-tag.sh` only when all checks pass.
